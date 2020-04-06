@@ -5,7 +5,18 @@ const obj = {
   "items": [
     {
       "name": 2,
-      "items": [{ "name": 3 }, { "name": 5 }, { "name": 6 }, { "name": 7 }]
+      "items": [
+        {
+          "name": 8,
+          "items": [{ "name": 9 }, { "name": 10 }]
+        },{
+          "name": 8,
+          "items": [{ "name": 9 }, { "name": 10 }]
+        },{
+          "name": 8,
+          "items": [{ "name": 9 }, { "name": 10 }]
+        }
+        ]
     },
     {
       "name": 8,

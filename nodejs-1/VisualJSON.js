@@ -1,6 +1,5 @@
 class VisualJSON {
   #obj = {}
-  #visibleArray = []
   constructor(obj) {
     this.#obj = obj
   }
@@ -14,32 +13,27 @@ class VisualJSON {
     }
   }
 
-  prepare(obj = this.#obj, subarray = false, line = '', last = false) {
-    let currentLine = line
-    const values = Object.values(obj)
-    const length = values.length
-    for (let i = 0; i < length; i++) {
-      if (Array.isArray(values[i])) {
-        let key = 0;
-        if (subarray) currentLine += (!last ? "│" : " ") + this.prefix('space')
-        currentLine += Object.values(values[i][0]).length > 1 ? this.prefix('array') : this.prefix('object')
-        values[i].forEach(item => {
-          this.prepare(item, true, currentLine, key === values[i].length - 1)
-          key++
-        })
+  prepare(tree = this.#obj, level = 0, parentPre = '', treeStr = '') {
+    if (typeof tree !== 'object') return ''
+    if (Array.isArray(tree)) {
+      tree.forEach((child, index) => {
+        let pre = `${parentPre}${tree[index + 1] ? this.prefix('array') : this.prefix('object')}`
+        treeStr += `${pre}${child.name}\n`
+        if (child.items) {
+          treeStr += this.prepare(child.items, level + 1, `${parentPre}${(tree[index + 1] ? "│" : " ") + this.prefix('space')}`)
+        }
+      })
+    } else {
+      treeStr = `${tree.name}\n`
+      if (tree.items) {
+        treeStr += this.prepare(tree.items, level + 1)
       }
-      if (last && values.length > 1) {
-        currentLine = this.prefix('object')
-      }
-      if (typeof values[i] === 'object') return
-      this.#visibleArray.push(currentLine + values[i])
-      currentLine = ''
     }
+    return treeStr
   }
 
   show() {
-    this.prepare()
-    this.#visibleArray.forEach(item => console.log(item))
+    console.log(this.prepare())
   }
 }
 
