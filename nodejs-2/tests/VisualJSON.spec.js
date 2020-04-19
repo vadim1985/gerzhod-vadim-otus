@@ -2,25 +2,27 @@ const VisualJSON = require('../VisualJSON');
 const VisualDirectory = require('../VisualDirectory');
 const mock = require('mock-fs');
 let visualJSON = '';
+jest.mock('../VisualDirectory.js', () => {
+  return {
+    directoryJSON: jest.fn().mockImplementation(() => {
+      return {
+        name: 'test_dir',
+        items: [{ name: 'file_0' },
+        {
+          name: 'folder_0',
+          items: [
+            { name: 'file_1' },
+            { name: 'folder_1', items: [{ name: 'file_2' }] },
+            { name: 'folder_2', items: [{ name: 'file_3' }] }]
+        }]
+      };
+    })
+  };
+});
 
 describe('VisualJSON', () => {
   beforeEach(() => {
-    mock({
-      'test_dir': {
-        'file_0': 'file_0 contents',
-        'folder_0': {
-          file_1: 'file_1 contents',
-          folder_1: {
-            file_2: 'file_4 contents',
-          },
-          folder_2: {
-            file_3: 'file_7 contents',
-          },
-        }
-      }
-    });
-    const directoryJSON = new VisualDirectory('./test_dir').directoryJSON();
-    visualJSON = new VisualJSON(directoryJSON);
+    visualJSON = new VisualJSON(VisualDirectory.directoryJSON());
   });
   afterEach(mock.restore);
 
