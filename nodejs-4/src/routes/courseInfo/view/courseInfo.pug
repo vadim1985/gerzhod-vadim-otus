@@ -1,0 +1,26 @@
+html
+  head
+    meta(charset='utf-8')
+    style
+      include courseInfo.css
+  body
+    input(type='button' value='Назад' onclick='move()' class='back_button')
+    div(class='main')
+      section(class='content')
+        h1(class='center') Все уроки
+      table(class='heavyTable')
+        thead
+          tr
+            th № п/п
+            th Название урока
+        tbody
+          each lesson, index in course.lessons
+            tr(onclick='move('+lesson.id+')')
+              td=index
+              td=lesson.name
+script.
+  function move(id) {
+    id
+    ? window.location.href = window.location.href + '/' + id
+    : window.location.href = 'http://localhost:3000/courses/'
+  }
