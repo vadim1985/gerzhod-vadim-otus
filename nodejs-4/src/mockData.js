@@ -13,7 +13,8 @@ const courses = [
     ]
   },
   {
-    id: 2, name: 'Learn Java Essentials',
+    id: 2, 
+    name: 'Learn Java Essentials',
     description: '',
     author: '',
     userAccess: [],
@@ -25,7 +26,8 @@ const courses = [
     ]
   },
   {
-    id: 3, name: 'Learn Python Essentials',
+    id: 3, 
+    name: 'Learn Python Essentials',
     description: '',
     author: '',
     userAccess: [],
@@ -37,7 +39,8 @@ const courses = [
     ]
   },
   {
-    id: 4, name: 'Learn Ruby on Rails Essentials',
+    id: 4, 
+    name: 'Learn Ruby on Rails Essentials',
     description: '',
     author: '',
     userAccess: [],
@@ -49,7 +52,8 @@ const courses = [
     ]
   },
   {
-    id: 5, name: 'Learn Haskell Essentials',
+    id: 5, 
+    name: 'Learn Haskell Essentials',
     description: '',
     author: '',
     userAccess: [],
@@ -61,7 +65,8 @@ const courses = [
     ]
   },
   {
-    id: 6, name: 'Learn Go Essentials',
+    id: 6, 
+    name: 'Learn Go Essentials',
     description: '',
     author: '',
     userAccess: [],
@@ -73,7 +78,8 @@ const courses = [
     ]
   },
   {
-    id: 7, name: 'Learn C++ Essentials',
+    id: 7, 
+    name: 'Learn C++ Essentials',
     description: '',
     author: '',
     userAccess: [],
@@ -85,7 +91,8 @@ const courses = [
     ]
   },
   {
-    id: 8, name: 'Learn C# Essentials',
+    id: 8, 
+    name: 'Learn C# Essentials',
     description: '',
     author: '',
     userAccess: [],
@@ -97,7 +104,8 @@ const courses = [
     ]
   },
   {
-    id: 9, name: 'Learn Russian language Essentials',
+    id: 9, 
+    name: 'Learn Russian language Essentials',
     description: '',
     author: '',
     userAccess: [],

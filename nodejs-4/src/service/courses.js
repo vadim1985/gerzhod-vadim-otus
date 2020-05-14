@@ -1,4 +1,5 @@
 const courses = require('../mockData');
+const courseRepo = require('../config/schemas/courseSchema')
 
 const coursesRepo = {
 
