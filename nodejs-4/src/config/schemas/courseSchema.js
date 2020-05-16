@@ -1,4 +1,4 @@
-const mongoose = require('../mongoConnect')
+const mongoose = require('../mongoConnect');
 
 const courseSchema = new mongoose.Schema({
   name: {
@@ -9,7 +9,7 @@ const courseSchema = new mongoose.Schema({
   description: {
     type: String
   },
-  author:{
+  author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users',
   },
@@ -19,18 +19,26 @@ const courseSchema = new mongoose.Schema({
       ref: 'Users',
     },
   ],
-  lessons:[
-    {
-      name: {
-        type: String,
-        required: true,
-        unique: true,
-      },
-      comment:{
-        type: String
+  lessons: {
+    type: [
+      {
+        name: {
+          type: String
+        },
+        comment: {
+          type: [
+            {
+              text: {
+                type: String
+              }
+            }
+          ],
+          default: []
+        }
       }
-    }
-  ]
+    ],
+    default: []
+  }
 });
 
 const course = mongoose.model('Courses', courseSchema);

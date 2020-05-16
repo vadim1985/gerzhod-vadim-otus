@@ -5,7 +5,7 @@ html
       include lesson.css
   body
     input(type='button' value='Назад' onclick='move()' class='back_button')
-  form(name= 'auth', class="form-style", method='post', action='http://localhost:3000/course/'+courseId+'/'+lesson.id)
+  form(name= 'auth', class="form-style", method='post', action=`http://localhost:3000/course/${courseId}/lesson/${lesson.id}`)
     ul
       li
         h1=lesson.name
@@ -13,12 +13,20 @@ html
         div
           iframe(width="560" height="315" src="https://www.youtube.com/embed/9lO06Zxhu88" frameborder="0")
       li
-        textarea(name="comment" class="field-style" placeholder="Комментарий")
+        table(class='heavyTable')
+          thead
+            tr
+              th Комментарии
+          tbody
+            each currentComment, index in lesson.comment
+              tr
+                td=currentComment.text
+        textarea(name="text" class="field-style" placeholder="Комментарий")
       li
         input(type="submit" value="Оставить комментарий")
 script.
   function move() {
     const arr = window.location.href.split('/')
-    arr.pop()
+    arr.splice(-2,2)
     window.location.href = arr.join('/')
   }

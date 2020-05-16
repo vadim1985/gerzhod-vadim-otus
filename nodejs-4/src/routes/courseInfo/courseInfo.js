@@ -1,23 +1,44 @@
-const express = require('express')
+const express = require('express');
 const pug = require('pug');
-const router = express.Router()
-const coursesRepo = require('../../service/courses')
+const router = express.Router();
+const coursesRepo = require('../../service/courses');
 
 
-router.get('/:id', (req, res) => {
-  const course = coursesRepo.getCourseById(+req.params.id)
-  res.status(200).set('Content-Type', 'text/html').send(pug.renderFile(__dirname + '/view/courseInfo.pug', {course}))
-})
+router.get('/:id', async (req, res) => {
+  try {
+    const course = await coursesRepo.getCourseById(req.params.id);
+    res.status(200).set('Content-Type', 'text/html').send(pug.renderFile(__dirname + '/view/courseInfo.pug', { course }));
+  } catch (err) {
+    res.status(400).send({ error: err.errmsg });
+  }
+});
 
-router.get('/:courseId/:lessonId', (req, res) => {
-  const lesson = coursesRepo.getLessonById(+req.params.courseId, +req.params.lessonId)
-  res.status(200).set('Content-Type', 'text/html').send(pug.renderFile(__dirname + '/view/lesson.pug', {courseId: req.params.courseId, lesson}))
-})
+router.get('/:courseId/lesson/:lessonId', async (req, res) => {
+  try {
+    const lesson = await coursesRepo.getLessonById(req.params.courseId, req.params.lessonId);
+    res.status(200).set('Content-Type', 'text/html').send(pug.renderFile(__dirname + '/view/lesson.pug', { courseId: req.params.courseId, lesson }));
+  } catch (err) {
+    res.status(400).send({ error: err.errmsg });
+  }
+});
 
-router.post('/:courseId/:lessonId', (req, res) => {
-  const lesson = coursesRepo.getLessonById(+req.params.courseId, +req.params.lessonId)
-  lesson.comment=req.body.comment
-  res.status(200).set('Content-Type', 'text/html').send(pug.renderFile(__dirname + '/view/lesson.pug', {courseId: req.params.courseId, lesson}))
-})
+router.put('/:courseId/lesson/', async (req, res) => {
+  try {
+    const course = await coursesRepo.addLesson(req.params.courseId, req.body);
+    res.status(201).send(course);
+  } catch (err) {
+    res.status(400).send({ error: err.errmsg });
+  }
+});
 
-module.exports = router
+router.put('/:courseId/lesson/:lessonId', async (req, res) => {
+  try {
+    await coursesRepo.addComment(req.params.courseId, req.params.lessonId, req.body);
+    const lesson = await coursesRepo.getLessonById(req.params.courseId, req.params.lessonId);
+    res.status(200).set('Content-Type', 'text/html').send(pug.renderFile(__dirname + '/view/lesson.pug', { courseId: req.params.courseId, lesson }));
+  } catch (err) {
+    res.status(400).send({ error: err.errmsg });
+  }
+});
+
+module.exports = router;
