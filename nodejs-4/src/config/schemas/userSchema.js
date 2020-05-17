@@ -1,5 +1,5 @@
-const bcrypt = require('bcrypt')
-const mongoose = require('../mongoConnect')
+const bcrypt = require('bcrypt');
+const mongoose = require('../mongoConnect');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
   }
 });
 
