@@ -14,10 +14,10 @@ html
             th Название
         tbody
           each course, index in courses
-            tr(onclick='move('+course.id+')')
+            tr(onclick=`move(\"${course.id}\")`)
               td=index
               td=course.name
 script.
   function move(id) {
-    window.location.href = 'http://localhost:3000/course/'+id
+    window.location.href = `http://localhost:3000/course/${id}`
   }

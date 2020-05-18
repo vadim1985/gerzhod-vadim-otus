@@ -15,12 +15,12 @@ html
             th Название урока
         tbody
           each lesson, index in course.lessons
-            tr(onclick='move('+lesson.id+')')
+            tr(onclick=`move(\"${lesson.id}\")`)
               td=index
               td=lesson.name
 script.
   function move(id) {
     id
-    ? window.location.href = window.location.href + '/' + id
+    ? window.location.href = `${window.location.href}/lesson/${id}`
     : window.location.href = 'http://localhost:3000/courses/'
   }
