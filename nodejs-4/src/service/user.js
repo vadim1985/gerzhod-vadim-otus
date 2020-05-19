@@ -3,8 +3,8 @@ const bcrypt = require('bcrypt');
 
 const userRepo = {
 
-  create: async (name, password) => {
-    return await userSchema.create({name, password})
+  create: async (user) => {
+    return await userSchema.create(user);
   },
 
   findAll: async () => {
@@ -17,6 +17,10 @@ const userRepo = {
 
   findByName: async (name) => {
     return await userSchema.findOne({ name });
+  },
+
+  updateUser: async (userId, user) => {
+    return userSchema.updateOne({ _id: userId }, user);
   },
 
   passwordsAreEqual: async (hashedPassword, plainPassword) => {
