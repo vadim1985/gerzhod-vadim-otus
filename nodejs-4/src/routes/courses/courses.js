@@ -5,9 +5,11 @@ const coursesRepo = require('../../service/courses');
 const passport = require('passport')
 
 
-router.get('/', async (req, res) => {
+router.get('/', 
+passport.authenticate('jwt', { session: false }),
+async (req, res) => {
   const courses = await coursesRepo.findAll();
-  res.status(200).set('Content-Type', 'text/html').send(pug.renderFile(__dirname + '/view/courses.pug', { courses }));
+  res.status(200).set('Content-Type', 'text/html').send(pug.renderFile(__dirname + '/view/courses.pug', { courses, cookieValue:req.cookies._token }));
 });
 
 router.put('/',

@@ -5,8 +5,13 @@ const userRepo = require('../../service/user');
 
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
+
+const cookieExtractor = function(req) {
+  if (req && req.cookies) return req.cookies._token;
+};
+
 const opts = {
-  jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
   secretOrKey: process.env.SECRET_KEY
 };
 

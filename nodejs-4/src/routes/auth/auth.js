@@ -7,7 +7,8 @@ router.post('/',
   passport.authenticate('local', { session: false, failureRedirect: '/' }),
   (req, res) => {
     const token = jwt.sign({ userId: req.user._id }, process.env.SECRET_KEY, { expiresIn: '10 days' });
-    res.send({ token });
+    res.cookie('_token', token)
+    res.redirect('/courses')
   });
 
 module.exports = router;
