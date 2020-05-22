@@ -1,7 +1,7 @@
 ## use
 npm run start
 
-## create users - bootstrap.js
+## just run - npm run start
 
 ## endpoints
 post /auth - get token
