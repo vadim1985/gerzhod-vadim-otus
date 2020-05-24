@@ -9,8 +9,8 @@ it('method findAll should be is not undefined', () => {
     expect(coursesRepo.findAll()).toBeDefined();
   });
 
-it('method findAll should return array', () => {
-    expect(Array.isArray(coursesRepo.findAll())).toBe(true);
+it('method findAll should return array', async() => {
+    expect(Array.isArray(await coursesRepo.findAll())).toBe(true);
   });
 
 it('method getCourseById should be is not undefined', () => {
