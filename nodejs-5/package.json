@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx nodemon index.js"
+    "start:manual": "npx nodemon index.js manual",
+    "start:auto": "npx nodemon index.js auto"
   },
   "author": "VG",
   "license": "ISC",

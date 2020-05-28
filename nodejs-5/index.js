@@ -11,6 +11,10 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/html/index.html');
 });
 
+app.get('/parameters', (req, res) => {
+  res.status(200).send({param: process.argv[2]})
+});
+
 io.on('connection', async (socket) => {
   const coordinates = [];
   console.log('user connected');

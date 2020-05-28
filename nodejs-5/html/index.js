@@ -1,7 +1,17 @@
 let map;
+const positions = [
+  { lat: 35.685, lng: 139.691 },
+  { lat: 35.686, lng: 139.692 },
+  { lat: 35.687, lng: 139.693 },
+  { lat: 35.688, lng: 139.694 },
+  { lat: 35.689, lng: 139.695 },
+];
+let param;
 
 const showGeoPosition = async () => {
-  const pos = await getCurrentPosition();
+  const response = await fetch('http://localhost:3000/parameters')
+  param = (await response.json()).param;
+  const pos = await getCurrentPosition(param, 0)
   map = L.map('map').setView([pos.lat, pos.lng], 14);
   L.marker([pos.lat, pos.lng]).addTo(map);
   mapLink =
@@ -15,8 +25,9 @@ const showGeoPosition = async () => {
   }).addTo(map);
 };
 
-const getCurrentPosition = async () => {
+const getCurrentPosition = async (params, index) => {
   return new Promise((res, rej) => {
+    if (params === 'auto') res(positions[index])
     navigator.geolocation.getCurrentPosition((position) => {
       const currentPosition = {
         lat: position.coords.latitude,
@@ -34,10 +45,10 @@ const start = async () => {
     for (var i = 0; i < 5; i++) {
       ((i) => {
         setTimeout(async () => {
-          const position = await getCurrentPosition();
+          const position = await getCurrentPosition(param, i)
           socket.emit('setPosition', { position });
           i === 4 && socket.emit('end');
-        }, 60000 * (i + 1));
+        }, 5000 * (i + 1));
       })(i);
     }
     socket.on('pathReady', ({ path }) => {
@@ -59,3 +70,4 @@ const start = async () => {
 };
 
 start();
+// showGeoPosition();
