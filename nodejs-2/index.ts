@@ -1,5 +1,5 @@
-const { program } = require('commander');
-const VisualDirectory = require('./VisualDirectory');
+import { program } from 'commander';
+import { VisualDirectory } from './VisualDirectory';
 
 program.option('-d, --depth <number>', 'input depth');
 program.parse(process.argv);
