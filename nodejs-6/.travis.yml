@@ -5,8 +5,5 @@ services:
 
 before_install:
   - docker build -t node_proj_docker .
-  - docker run -p 3000:3000 node_proj_docker:latest .
+  - docker run -d -p 3000:3000 node_proj_docker:latest .
   - docker ps -a
-
-script:
-  - bundle exec rake test
