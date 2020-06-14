@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "build": "tsc",
+    "dev": "npx nodemon --exec ts-node index.ts",
+    "start": "node dist/index.js",
     "test": "jest --coverage"
   },
   "author": "VG",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^14.0.13",
     "commander": "^5.0.0"
   },
   "devDependencies": {
