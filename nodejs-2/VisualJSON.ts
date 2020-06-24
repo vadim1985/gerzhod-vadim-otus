@@ -32,8 +32,8 @@ export class VisualJSON {
         }
       });
     } else {
-      treeStr = `${tree.name}\n`;
-      if (tree.items) {
+      treeStr = `${tree?.name}\n`;
+      if (tree?.items) {
         treeStr += this.prepare(tree.items, level + 1);
       }
     }

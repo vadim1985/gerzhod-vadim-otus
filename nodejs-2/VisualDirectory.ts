@@ -13,7 +13,7 @@ export class VisualDirectory {
 
   private getPath(path: string): string {
     const re: RegExp = /[\\]$/g;
-    return re.test(path) ? path : `${path}\\`;
+    return re.test(path) ? path : `${path}/`;
   }
 
   private isTheEnd(path: string): boolean {
