@@ -8,6 +8,7 @@ import {
   UseGuards,
   Post,
   BadRequestException,
+  Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './model/user.model';
@@ -33,9 +34,9 @@ export class UserController {
     return await this.userService.createUser(user);
   }
 
-  @Post(':id')
+  @Delete()
   async removeUser(
-    @Param('id', ParseIntPipe) id: number,
+    @Body('id') id: number,
   ): Promise<{ id: number }> {
     return this.userService.removeUser(id);
   }

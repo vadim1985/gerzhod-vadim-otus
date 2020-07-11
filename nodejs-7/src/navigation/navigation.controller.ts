@@ -7,6 +7,7 @@ import {
   Body,
   UseGuards,
   Post,
+  Delete,
 } from '@nestjs/common';
 import { NavigationService } from './navigation.service';
 import { Navigation } from './model/navigation.model';
@@ -32,9 +33,9 @@ export class NavigationController {
     return this.navigationService.createNavigation(navigation);
   }
 
-  @Post(':id')
+  @Delete()
   removeNavigation(
-    @Param('id', ParseIntPipe) id: number,
+    @Body('id') id: number,
   ): Promise<{ id: number }> {
     return this.navigationService.removeNavigation(id);
   }
