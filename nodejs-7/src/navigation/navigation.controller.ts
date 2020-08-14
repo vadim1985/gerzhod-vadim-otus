@@ -1,18 +1,47 @@
-import { Controller, Get, Query, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Put,
+  Body,
+  UseGuards,
+  Post,
+  Delete,
+} from '@nestjs/common';
 import { NavigationService } from './navigation.service';
-import { INavigation } from './interface';
+import { Navigation } from './model/navigation.model';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('navigation')
 export class NavigationController {
   constructor(private readonly navigationService: NavigationService) {}
 
   @Get()
-  findAll(): INavigation[] {
+  findAll(): Promise<Navigation[]> {
     return this.navigationService.findAll();
   }
 
   @Get(':id')
-  findById(@Param('id', ParseIntPipe) id: number): INavigation {
+  findById(@Param('id', ParseIntPipe) id: number): Promise<Navigation> {
     return this.navigationService.findById(id);
+  }
+
+  @Put()
+  createNavigation(@Body() navigation: Navigation): Promise<Navigation> {
+    return this.navigationService.createNavigation(navigation);
+  }
+
+  @Delete()
+  removeNavigation(
+    @Body('id') id: number,
+  ): Promise<{ id: number }> {
+    return this.navigationService.removeNavigation(id);
+  }
+
+  @Post()
+  updateNavigation(@Body() navigation: Navigation): Promise<{ id: number }> {
+    return this.navigationService.updateNavigation(navigation);
   }
 }

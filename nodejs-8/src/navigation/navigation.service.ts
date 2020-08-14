@@ -1,33 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Navigation } from './model/navigation.model';
 import { UserNavigationService } from '../user-navigation/user-navigation.service';
 import { User } from '../user/model/user.model';
+import { ModuleRef } from '@nestjs/core';
 
 @Injectable()
-export class NavigationService {
+export class NavigationService implements OnModuleInit {
+  private userNavigationService: UserNavigationService
   constructor(
     @InjectModel(Navigation)
     private navigationModel: typeof Navigation,
-    private readonly userNavigationService: UserNavigationService,
-  ) {}
+    private readonly moduleRef: ModuleRef
+  ) { }
+
+  onModuleInit() {
+    this.userNavigationService = this.moduleRef.get(UserNavigationService, { strict: false });
+  }
 
   async findAll(): Promise<Navigation[]> {
     return await this.navigationModel.findAll();
   }
-  async findById(navigationId: number): Promise<Navigation> {
+
+  async findByIds(id: number[]) {
+    return this.navigationModel.findAll({ where: { id } })
+  }
+
+  async findById(id: number): Promise<Navigation> {
     return await this.navigationModel.findOne({
       where: {
-        id: navigationId,
-      },
-      include: [
-        {
-          model: User,
-          attributes: {
-            exclude: ['password'],
-          },
-        },
-      ],
+        id
+      }
     });
   }
 
@@ -53,7 +56,7 @@ export class NavigationService {
     return message;
   }
 
-  async updateNavigation(navigation: Navigation): Promise<{ id: number }> {
+  async updateNavigation(navigation: Navigation): Promise<Navigation> {
     const navigationObject = await this.navigationModel.findOne({
       where: { id: navigation.id },
     });
@@ -67,14 +70,14 @@ export class NavigationService {
       );
       await this.createUserNavigation(navigation.users, navigation.id);
     }
-    return { id: navigation.id };
+    return navigationObject;
   }
 
   private async createUserNavigation(
     userArray: User[],
     navigationId: number,
   ): Promise<void> {
-    await this.userNavigationService.bulkCreate(
+    userArray?.length && await this.userNavigationService.bulkCreate(
       userArray.map(({ id }) => ({
         userId: id,
         navigationId,
