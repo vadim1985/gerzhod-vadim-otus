@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { NavigationModule } from './navigation/navigation.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 import { UserModule } from './user/user.module';
+import { NavigationModule } from './navigation/navigation.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UserNavigationModule } from './user-navigation/user-navigation.module';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,12 +20,18 @@ import { AuthModule } from './auth/auth.module';
       autoLoadModels: true,
       synchronize: true,
     }),
-    NavigationModule,
+    GraphQLModule.forRoot({
+      typePaths: ['./**/*.graphql'],
+      context: ({ req }) => ({ headers: req.headers }),
+      definitions: {
+        path: join(process.cwd(), 'src/graphql.ts'),
+      },
+    }),
     UserModule,
-    UserNavigationModule,
-    AuthModule,
+    NavigationModule,
+    UserNavigationModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

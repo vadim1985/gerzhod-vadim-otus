@@ -1,7 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NavigationController } from './navigation.controller';
 import { NavigationService } from './navigation.service';
-import { navigation } from "../mock/navigation";
+import * as SequelizeMock from 'sequelize-mock';
+import { UserNavigationService } from '../user-navigation/user-navigation.service';
+import { Navigation } from './model/navigation.model';
+
+const DBConnectionMock = new SequelizeMock();
+const result: Navigation = DBConnectionMock.define('Navigation', {
+  id: 1,
+  name: 'Курсы',
+  url: '/course',
+  icon: 'course',
+});
 
 describe('Navigation Controller', () => {
   let navigationCntroller: NavigationController;
@@ -10,10 +20,12 @@ describe('Navigation Controller', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [NavigationController],
-      providers: [NavigationService]
+      providers: [NavigationService, UserNavigationService],
     }).compile();
 
-    navigationCntroller = module.get<NavigationController>(NavigationController);
+    navigationCntroller = module.get<NavigationController>(
+      NavigationController,
+    );
     navigationServise = module.get<NavigationService>(NavigationService);
   });
 
@@ -22,18 +34,18 @@ describe('Navigation Controller', () => {
   });
 
   it('should return an array of navigation', async () => {
-    jest.spyOn(navigationServise, 'findAll').mockImplementation(() => navigation);
-    expect(navigationCntroller.findAll()).toBe(navigation);
+    jest.spyOn(navigationServise, 'findAll').mockImplementation(() => {
+      return new Promise(res => res([result]));
+    });
+    expect(await navigationCntroller.findAll()).toBe([result]);
   });
 
   it('should return navigation', async () => {
-    const result = {
-      id: 1,
-      name: 'Курсы',
-      url: '/course',
-      icon: 'course',
-    }
-    jest.spyOn(navigationServise, 'findById').mockImplementation(() => result);
-    expect(navigationCntroller.findById(1)).toBe(result);
+    jest
+      .spyOn(navigationServise, 'findById')
+      .mockImplementation(
+        async (): Promise<Navigation> => Promise.resolve(result),
+      );
+    expect(await navigationCntroller.findById(1)).toBe(result);
   });
 });

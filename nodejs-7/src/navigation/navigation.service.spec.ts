@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NavigationService } from './navigation.service';
-import { INavigation } from "./interface";
+import { INavigation } from './interface';
 
 describe('NavigationService', () => {
   let service: NavigationService;
